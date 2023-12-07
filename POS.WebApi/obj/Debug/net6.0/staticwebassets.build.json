@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ndl6dzHIae+LIc0n0cr6zDI02fhQSm/MgSouFYjqfDU=",
+  "Source": "POS.WebApi",
+  "BasePath": "_content/POS.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

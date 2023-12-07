@@ -1,0 +1,15 @@
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\bin\Debug\net6.0\POS.Core.deps.json
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\bin\Debug\net6.0\POS.Core.dll
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\bin\Debug\net6.0\POS.Core.pdb
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\bin\Debug\net6.0\POS.DB.dll
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\bin\Debug\net6.0\POS.DB.pdb
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.csproj.AssemblyReference.cache
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.AssemblyInfoInputs.cache
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.AssemblyInfo.cs
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.csproj.CoreCompileInputs.cache
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.csproj.CopyComplete
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.dll
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\refint\POS.Core.dll
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\POS.Core.pdb
+C:\Users\olgie\source\repos\POS.WebApi\POS.Core\obj\Debug\net6.0\ref\POS.Core.dll

@@ -3,6 +3,7 @@ using POS.Core.DTO;
 using POS.DB;
 using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
+using POS.Core.Utilities;
 
 namespace POS.Core
 {
@@ -31,7 +32,7 @@ namespace POS.Core
             return new AuthenticatedUser()
             {
                 Username = user.Name,
-                Token = "test token"
+                Token = JwtGenerator.GenerateUserToken(user.Name)
             };
         }
 
@@ -53,7 +54,7 @@ namespace POS.Core
             return new AuthenticatedUser
             {
                 Username = user.Name,
-                Token = "test token"
+                Token = JwtGenerator.GenerateUserToken(user.Name)
             };
         }
     }

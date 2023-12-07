@@ -91,3 +91,4 @@ C:\Users\olgie\source\repos\POS.WebApi\POS.WebApi\bin\Debug\net6.0\runtimes\brow
 C:\Users\olgie\source\repos\POS.WebApi\POS.WebApi\bin\Debug\net6.0\Microsoft.AspNet.Identity.Core.dll
 C:\Users\olgie\source\repos\POS.WebApi\POS.WebApi\bin\Debug\net6.0\POS.Core.dll
 C:\Users\olgie\source\repos\POS.WebApi\POS.WebApi\bin\Debug\net6.0\POS.Core.pdb
+C:\Users\olgie\source\repos\POS.WebApi\POS.WebApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

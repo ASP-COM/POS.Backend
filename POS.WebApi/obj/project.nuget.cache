@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "06TnrkskUEa90aN4EN4FzoSlzRmsUc6hOmydXIeUGIfMAGHer2kATGbGGDrWCa2jLlYvO+PGZL85N3gKxvZArw==",
+  "dgSpecHash": "kck8nhbhFDeVyhZYw8oFQ7gxn0WVLQM/hcrjZLqhcNq6CqmPzPq+rMgiLOp4YCJt8A4Oc4inTiEbXdZAvfL2hQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\olgie\\source\\repos\\POS.WebApi\\POS.WebApi\\POS.WebApi.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\olgie\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\olgie\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\olgie\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.4\\microsoft.aspnet.identity.core.2.2.4.nupkg.sha512",
+    "C:\\Users\\olgie\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.0\\microsoft.aspnetcore.authentication.jwtbearer.6.0.0.nupkg.sha512",
     "C:\\Users\\olgie\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\olgie\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\olgie\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.2\\microsoft.data.sqlclient.5.0.2.nupkg.sha512",

@@ -1,5 +1,5 @@
 ﻿using POS.Core.DTO;
-using POS.DB;
+using POS.DB.Models;
 
 namespace POS.Core
 {

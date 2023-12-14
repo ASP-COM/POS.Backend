@@ -10,6 +10,6 @@ namespace POS.DB.Models
         public string? Description { get; set; }
         public Business? Business { get; set; }
         public List<Item> Items { get; set; }
-        public List<Discount> Discounts { get; set; }
+        public List<Discount>? Discounts { get; set; }
     }
 }

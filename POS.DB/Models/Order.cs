@@ -17,8 +17,8 @@ namespace POS.DB.Models
         public OrderStatus Status { get; set; }
         public PaymentMethod PaymentMethod { get; set; }   
         public User? Customer { get; set; }
-        public User? Employee { get; set; }
-        public List<OrderLine> OrderLines { get; set; }
-        public List<Voucher> Vouchers { get; set; }
+        public List<User>? Employee { get; set; }
+        public List<OrderLine>? OrderLines { get; set; }
+        public List<Voucher>? Vouchers { get; set; }
     }
 }

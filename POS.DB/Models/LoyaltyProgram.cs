@@ -6,8 +6,8 @@ namespace POS.DB.Models
     {
         [Key]
         public int Id { get; set; }
-        public Business Business { get; set; }
         public string Description {  get; set; }
+        public Business Business { get; set; }
 
         public List<LoyaltyCard>? LoyaltyCards { get; set; }
         public List<Discount>? Discounts { get; set; }   

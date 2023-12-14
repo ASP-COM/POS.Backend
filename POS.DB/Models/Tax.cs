@@ -12,7 +12,7 @@ namespace POS.DB.Models
         [Column(TypeName = "decimall(1,2)")]
         public decimal AmountPct{ get; set; }
 
-        public List<Item> Items { get; set; }
-        public List<OrderLine> OrderLines { get; set; }
+        public List<Item>? Items { get; set; }
+        public List<OrderLine>? OrderLines { get; set; }
     }
 }

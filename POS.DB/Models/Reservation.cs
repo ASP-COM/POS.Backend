@@ -6,9 +6,9 @@
         public string Description { get; set; }
         public DateTime ResStart { get; set; }
         public DateTime ResEnd { get; set; }
-        public bool? isReserved { get; set; }
+        public bool? IsReserved { get; set; }
         public User ProvidingEmployee { get; set; }
         public Item Service { get; set; }
-        public User? User { get; set; }
+        public User? Customer { get; set; }
     }
 }

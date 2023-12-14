@@ -8,7 +8,7 @@ namespace POS.DB.Models
         [Key]
         public int Id { get; set; }
         public string? Description { get; set; }
-        public DateTime? ValidFrom { get; set; }
+        public DateTime ValidFrom { get; set; }
         public DateTime ValidTo { get; set; }
         public bool IsUsed { get; set; }
 

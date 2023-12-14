@@ -14,6 +14,7 @@ namespace POS.DB.Models
         [ForeignKey("UserId")]
         public User User {  get; set; }
 
+        public int LoyaltyPoints { get; set; } 
 
     }
 }

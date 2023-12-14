@@ -13,7 +13,8 @@
         None = 0,
         Cash,
         Card,
-        FullVoucher
+        FullVoucher,
+        FullLoyaltyPoints
     }
 
     public enum ItemType

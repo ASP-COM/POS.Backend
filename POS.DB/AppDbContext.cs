@@ -23,6 +23,7 @@ namespace POS.DB
         public DbSet<Tax> Tax { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Voucher> Voucher { get; set; }
+        public DbSet<WorkingHours> WorkingHours { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

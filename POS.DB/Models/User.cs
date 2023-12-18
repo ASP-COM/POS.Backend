@@ -15,6 +15,7 @@ namespace POS.DB.Models
 
         // Only for employees acounts
         public Business? Business { get; set; }
+        public List<WorkingHours>? EmployeeWorkingHours { get; set; }
         
     }
 }

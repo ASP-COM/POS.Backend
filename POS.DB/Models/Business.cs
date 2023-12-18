@@ -10,7 +10,8 @@ namespace POS.DB.Models
         public List<Voucher>? Vouchers { get; set; }
         public List<Item>? Items { get; set; }
         public List<ItemCategory>? ItemCategories { get; set; }
-        public List<User>? Users { get; set; }   
+        public List<User>? Users { get; set; }
+        public List<WorkingHours>? BusinessHours { get; set; } // Add this line for company working hours
 
     }
 }

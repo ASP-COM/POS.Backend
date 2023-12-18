@@ -4,6 +4,7 @@ using POS.DB;
 using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using POS.Core.Utilities;
+using POS.DB.Models;
 
 namespace POS.Core
 {

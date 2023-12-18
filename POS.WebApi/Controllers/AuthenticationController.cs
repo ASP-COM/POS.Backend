@@ -1,7 +1,7 @@
 ﻿using POS.Core;
 using POS.Core.CustomExceptions;
-using POS.DB;
 using Microsoft.AspNetCore.Mvc;
+using POS.DB.Models;
 
 namespace POS.WebApi.Controllers
 {

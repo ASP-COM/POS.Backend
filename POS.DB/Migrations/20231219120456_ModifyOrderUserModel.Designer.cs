@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POS.DB;
 
@@ -11,9 +12,11 @@ using POS.DB;
 namespace POS.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231219120456_ModifyOrderUserModel")]
+    partial class ModifyOrderUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,6 +206,9 @@ namespace POS.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LoyaltyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LoyaltyPoints")
                         .HasColumnType("int");
 
@@ -218,7 +224,7 @@ namespace POS.DB.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LoyaltyCards");
+                    b.ToTable("LoyaltyCard");
                 });
 
             modelBuilder.Entity("POS.DB.Models.LoyaltyProgram", b =>
@@ -240,7 +246,7 @@ namespace POS.DB.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("LoyaltyPrograms");
+                    b.ToTable("LoyaltyProgram");
                 });
 
             modelBuilder.Entity("POS.DB.Models.Order", b =>

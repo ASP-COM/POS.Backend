@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POS.DB;
 
@@ -11,9 +12,11 @@ using POS.DB;
 namespace POS.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231219105817_FinalDbModel")]
+    partial class FinalDbModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,7 +102,7 @@ namespace POS.DB.Migrations
                         .HasColumnType("decimal(6,2)");
 
                     b.Property<decimal>("DiscountInPct")
-                        .HasColumnType("decimal(3,2)");
+                        .HasColumnType("decimal(1,2)");
 
                     b.Property<int?>("ForSpecificItemId")
                         .HasColumnType("int");
@@ -203,6 +206,9 @@ namespace POS.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LoyaltyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LoyaltyPoints")
                         .HasColumnType("int");
 
@@ -218,7 +224,7 @@ namespace POS.DB.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LoyaltyCards");
+                    b.ToTable("LoyaltyCard");
                 });
 
             modelBuilder.Entity("POS.DB.Models.LoyaltyProgram", b =>
@@ -240,7 +246,7 @@ namespace POS.DB.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("LoyaltyPrograms");
+                    b.ToTable("LoyaltyProgram");
                 });
 
             modelBuilder.Entity("POS.DB.Models.Order", b =>
@@ -255,9 +261,6 @@ namespace POS.DB.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("PaidDate")
@@ -277,16 +280,9 @@ namespace POS.DB.Migrations
                     b.Property<decimal>("TipAmount")
                         .HasColumnType("decimal(6,2)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -375,7 +371,7 @@ namespace POS.DB.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AmountPct")
-                        .HasColumnType("decimal(3,2)");
+                        .HasColumnType("decimal(1,2)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -408,6 +404,9 @@ namespace POS.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -419,6 +418,8 @@ namespace POS.DB.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("User");
                 });
@@ -605,21 +606,9 @@ namespace POS.DB.Migrations
                 {
                     b.HasOne("POS.DB.Models.User", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("POS.DB.Models.User", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("POS.DB.Models.User", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("POS.DB.Models.OrderLine", b =>
@@ -686,6 +675,10 @@ namespace POS.DB.Migrations
                         .WithMany("Users")
                         .HasForeignKey("BusinessId");
 
+                    b.HasOne("POS.DB.Models.Order", null)
+                        .WithMany("Employee")
+                        .HasForeignKey("OrderId");
+
                     b.Navigation("Business");
                 });
 
@@ -745,6 +738,8 @@ namespace POS.DB.Migrations
 
             modelBuilder.Entity("POS.DB.Models.Order", b =>
                 {
+                    b.Navigation("Employee");
+
                     b.Navigation("OrderLines");
 
                     b.Navigation("Vouchers");
@@ -762,8 +757,6 @@ namespace POS.DB.Migrations
                     b.Navigation("EmployeeWorkingHours");
 
                     b.Navigation("LoyaltyCards");
-
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

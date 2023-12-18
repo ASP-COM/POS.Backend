@@ -13,6 +13,9 @@ namespace POS.DB.Models
         public bool IsUnavailable { get; set; }
         public ItemType Type { get; set; }
 
+        // New property for the amount of time the service will take
+        public TimeSpan? ServiceDuration { get; set; }
+
         public Tax DefaultTax { get; set; }
         public Business Business { get; set; }
         public List<ItemCategory> Categories { get; set; }

@@ -1,6 +1,7 @@
 ﻿using POS.DB;
 using POS.DB.Models;
 using POS.Core.DTO;
+using POS.Core.Utilities;
 
 namespace POS.Core
 {
@@ -30,10 +31,14 @@ namespace POS.Core
                 throw new InvalidOperationException("User or LoyaltyProgram not found.");
             }
 
+
+            // calculate total amount of cards user already has (to generate a new one - we use a count as an suffix in card code)
+            int cardCount = GetUserCardCount(request.UserId);
+
             // Create a new LoyaltyCard
             var loyaltyCard = new LoyaltyCard
             {
-                CardCode = GenerateCardCode(), // Method implementation needed
+                CardCode = CardCodeGenerator.GenerateCardCode(DateTime.UtcNow, user.Name, user.Id, cardCount, request.LoyaltyProgramId), // Card Code generation method implemented
                 User = user,
                 LoyaltyPoints = 0, // It can be initialised as we want
                 LoyaltyProgram = loyaltyProgram,
@@ -50,13 +55,6 @@ namespace POS.Core
             return loyaltyCard;
         }
 
-        private string GenerateCardCode()
-        {
-            // Implement logic to generate a unique card code
-            // This can be based on your specific requirements, such as a combination of user and program details
-            return "GeneratedCardCode"; // Replace this with your actual logic
-        }
-
         public LoyaltyCard GetLoyaltyCardByCardCode(string cardCode) => _context.LoyaltyCards.FirstOrDefault(l => l.CardCode == cardCode);
 
         public LoyaltyCard GetLoyaltyCardById(int id) => _context.LoyaltyCards.FirstOrDefault(l => l.Id == id);
@@ -71,6 +69,17 @@ namespace POS.Core
         public List<LoyaltyCard> GetLoyaltyCardsByUserId(int userId)
         {
             return _context.LoyaltyCards.Where(l => l.UserId == userId).ToList();
+        }
+
+        public int GetUserCardCount(int userId)
+        {
+            // Retrieve the user's cards from the database
+            var userCards = _context.LoyaltyCards
+                .Where(card => card.User.Id == userId)
+                .ToList();
+
+            // Calculate and return the count of user cards
+            return userCards.Count;
         }
     }
 }

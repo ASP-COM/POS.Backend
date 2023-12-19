@@ -28,13 +28,13 @@ namespace POS.WebApi.Controllers
             return Ok(_loyaltyCardService.GetLoyaltyCardById(id));
         }
 
-        [HttpGet("user/{id}", Name = "GetLoyaltyCardByUserId")]
+        [HttpGet("user/{userId}", Name = "GetLoyaltyCardByUserId")]
         public IActionResult GetLoyaltyCardsById(int userId)
         {
             return Ok(_loyaltyCardService.GetLoyaltyCardsByUserId(userId));
         }
 
-        [HttpGet("loyalty_program/{id}", Name = "GetLoyaltyCardsByLoyaltyProgramId")]
+        [HttpGet("loyalty_program/{loyaltyProgramId}", Name = "GetLoyaltyCardsByLoyaltyProgramId")]
         public IActionResult GetLoyaltyCardsByLoyaltyProgramId(int loyaltyProgramId)
         {
             return Ok(_loyaltyCardService.GetLoyaltyCardsByLoyaltyProgramId(loyaltyProgramId));
@@ -50,9 +50,15 @@ namespace POS.WebApi.Controllers
         public IActionResult CreateLoyaltyCard(CreateLoyaltyCardRequest request)
         {
             var newLoyaltyCard = _loyaltyCardService.CreateLoyaltyCard(request);
-            var newData = _loyaltyCardService.GetLoyaltyCardById(newLoyaltyCard.Id);
-            //return CreatedAtRoute("GetLoyaltyCardById", new {id = newLoyaltyCard.Id}, newLoyaltyCard);
-            return Ok(); // swagger detects serialization cycle, we return Ok (will fix that asap)
+
+            // Set related entities to null in the response
+            // Setting related(child) entities to null in the response is a common practice to break the serialization cycle,
+            // especially when we are not interested in including the complete details of related entities in the response.
+            //IMPORTANT However, we can use techniques like lazy loading, eager loading, explicit loading, or JSON serializer
+            newLoyaltyCard.User = null;
+            newLoyaltyCard.LoyaltyProgram = null;
+
+            return CreatedAtRoute("GetLoyaltyCardById", new {id = newLoyaltyCard.Id}, newLoyaltyCard);
         }
 
     }

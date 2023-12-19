@@ -13,6 +13,8 @@ namespace POS.Core
         LoyaltyCard GetLoyaltyCardById(int id);
         LoyaltyCard GetLoyaltyCardByCardCode(string cardCode);
 
+        int GetUserCardCount(int userId);
+
         LoyaltyCard CreateLoyaltyCard(CreateLoyaltyCardRequest loyaltyCard);
 
     }

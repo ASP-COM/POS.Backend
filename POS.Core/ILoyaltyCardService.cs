@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using POS.Core.DTO;
-using POS.DB.Models;
+﻿using POS.Core.DTO;
 
 namespace POS.Core
 {

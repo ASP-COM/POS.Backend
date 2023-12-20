@@ -2,7 +2,7 @@
 {
     public class CreateLoyaltyCardRequest
     {
-        public int UserId { get; set; }
+        // public int UserId { get; set; }// no need to include UserId in request body (http context accessor usage)
 
         public int LoyaltyProgramId { get; set; }
 

@@ -1,0 +1,15 @@
+﻿namespace POS.Core.DTO
+{
+    public class CreateDiscountRequest
+    {
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public DateTime ValidFrom { get; set; }
+        public DateTime ValidUntil { get; set; }
+        public decimal FixedAmount { get; set; }
+        public decimal Percentage { get; set; }
+        public int? MinQuantity { get; set; }
+
+        public int? SpecificItemId { get; set; }
+    }
+}

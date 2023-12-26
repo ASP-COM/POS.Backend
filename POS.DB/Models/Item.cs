@@ -1,5 +1,6 @@
 ﻿using POS.DB.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace POS.DB.Models
 {
@@ -16,7 +17,16 @@ namespace POS.DB.Models
         // New property for the amount of time the service will take
         public TimeSpan? ServiceDuration { get; set; }
 
+        public int DefaultTaxId { get; set; }
+
+        [ForeignKey("DefaultTaxId")]
+
         public Tax DefaultTax { get; set; }
+
+        public int BusinessId { get; set; }
+
+        [ForeignKey("BusinessId")]
+
         public Business Business { get; set; }
         public List<ItemCategory> Categories { get; set; }
 

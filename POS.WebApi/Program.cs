@@ -17,6 +17,8 @@ builder.Services.AddTransient<ILoyaltyProgramService, LoyaltyProgramService>();
 builder.Services.AddTransient<ILoyaltyCardService,  LoyaltyCardService>();
 builder.Services.AddTransient<IDiscountService, DiscountService>();
 builder.Services.AddTransient<IItemCategoryService, ItemCategoryService>();
+builder.Services.AddTransient<ITaxService, TaxService>();
+builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET");

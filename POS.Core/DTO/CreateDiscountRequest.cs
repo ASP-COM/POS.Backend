@@ -11,5 +11,9 @@
         public int? MinQuantity { get; set; }
 
         public int? SpecificItemId { get; set; }
+
+        public List <int>? CategoryIds { get; set; }
+
+        public List <int>? LoyaltyProgramIds { get; set; }
     }
 }

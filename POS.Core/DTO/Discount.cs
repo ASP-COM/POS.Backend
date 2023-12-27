@@ -15,6 +15,10 @@ namespace POS.Core.DTO
 
         public int? SpecificItemId { get; set; }
 
+        public List<string>? CategoryNames { get; set; }
+
+        public List<string>? LoyaltyProgramDescriptions { get; set; }
+
         public static explicit operator Discount(DB.Models.Discount d) => new Discount
         {
             Id = d.Id,
@@ -29,6 +33,9 @@ namespace POS.Core.DTO
 
             SpecificItemId = d.ForSpecificItem?.Id,
 
+            CategoryNames = d.ForCategories?.Select(c => c.Name).ToList(),
+
+            LoyaltyProgramDescriptions = d.ForLoyaltyPrograms?.Select(l => l.Description).ToList(),
         };
 
     }

@@ -2,6 +2,7 @@
 using POS.Core.CustomExceptions;
 using Microsoft.AspNetCore.Mvc;
 using POS.DB.Models;
+using POS.Core.DTO;
 
 namespace POS.WebApi.Controllers
 {
@@ -18,11 +19,11 @@ namespace POS.WebApi.Controllers
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp(User user)
+        public async Task<IActionResult> SignUp(SignUpRequest request)
         {
             try
             {
-                var result = await _userService.SignUp(user);
+                var result = await _userService.SignUp(request);
                 return Created("", result);
             }
             catch (UsernameAlreadyExistsException e)
@@ -32,11 +33,11 @@ namespace POS.WebApi.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn(User user)
+        public async Task<IActionResult> SignIn(SignInRequest request)
         {
             try
             {
-                var result = await _userService.SignIn(user);
+                var result = await _userService.SignIn(request);
                 return Ok(result);
 
             }

@@ -20,6 +20,7 @@ builder.Services.AddTransient<IItemCategoryService, ItemCategoryService>();
 builder.Services.AddTransient<ITaxService, TaxService>();
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IWorkingHoursService, WorkingHoursService>();
+builder.Services.AddTransient<IVoucherService, VoucherService>();
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET");

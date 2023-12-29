@@ -9,7 +9,7 @@ namespace POS.DB.Models
         public int Id { get; set; }
         public string? Description { get; set; }
 
-        [Column(TypeName = "decimall(1,2)")]
+        [Column(TypeName = "decimal(3,2)")]
         public decimal AmountPct{ get; set; }
 
         public List<Item>? Items { get; set; }

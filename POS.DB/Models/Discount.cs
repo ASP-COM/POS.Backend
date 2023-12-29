@@ -14,10 +14,10 @@ namespace POS.DB.Models
         
         // Discount can be fixed amount or in percentage 
 
-        [Column(TypeName = "decimall(1,2)")]
+        [Column(TypeName = "decimal(3,2)")]
         public decimal DiscountInPct { get; set; }
         
-        [Column(TypeName = "decimall(6,2)")]
+        [Column(TypeName = "decimal(6,2)")]
         public decimal DiscountInAmount { get; set; }
         public int? minQuantity { get; set; } // Optional: Min quantity of products for discount to be applied
 

@@ -9,7 +9,7 @@ namespace POS.DB.Models
         public int OrderId { get; set; }
         public int LineId { get; set;}
 
-        [Column(TypeName = "decimall(6,2)")]
+        [Column(TypeName = "decimal(6,2)")]
         public decimal UnitPrice { get; set; }
 
         public int UnitCount { get; set; }

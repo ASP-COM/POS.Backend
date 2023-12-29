@@ -24,6 +24,8 @@ namespace POS.DB
         public DbSet<User> User { get; set; }
         public DbSet<Voucher> Voucher { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
+        public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
+        public DbSet<LoyaltyCard> LoyaltyCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +41,19 @@ namespace POS.DB
                 .Entity<Item>()
                 .Property(d => d.Type)
                 .HasConversion(new EnumToStringConverter<ItemType>());
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany()
+                .HasForeignKey(o => o.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict); // Choose the appropriate DeleteBehavior
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Employee)
+                .WithMany()
+                .HasForeignKey(o => o.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict); // Choose the appropriate DeleteBehavior
+
         }
 
     }

@@ -12,9 +12,18 @@ namespace POS.DB.Models
         public DateTime ValidTo { get; set; }
         public bool IsUsed { get; set; }
 
-        [Column(TypeName = "decimall(6,2)")]
+        [Column(TypeName = "decimal(6,2)")]
         public decimal Amount { get; set; }
+
+        public int? OrderId { get; set; }
+
+        [ForeignKey("OrderId")]
+
         public Order? Order { get; set; }
+
+        public int BusinessId { get; set; }
+
+        [ForeignKey("BusinessId")]
         public Business Business { get; set; }
     }
 }

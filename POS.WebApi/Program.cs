@@ -12,6 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+builder.Services.AddTransient<IBusinessService, BusinessService>();
+builder.Services.AddTransient<ILoyaltyProgramService, LoyaltyProgramService>();
+builder.Services.AddTransient<ILoyaltyCardService,  LoyaltyCardService>();
+builder.Services.AddTransient<IDiscountService, DiscountService>();
+builder.Services.AddTransient<IItemCategoryService, ItemCategoryService>();
+builder.Services.AddTransient<ITaxService, TaxService>();
+builder.Services.AddTransient<IItemService, ItemService>();
+builder.Services.AddTransient<IWorkingHoursService, WorkingHoursService>();
+builder.Services.AddTransient<IVoucherService, VoucherService>();
+builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
 var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER");

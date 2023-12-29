@@ -19,28 +19,28 @@ namespace POS.Core
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<AuthenticatedUser> SignIn(User user)
+        public async Task<AuthenticatedUser> SignIn(SignInRequest request)
         {
             var dbUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Name == user.Name);
+                .FirstOrDefaultAsync(u => u.Name == request.Name);
 
             if (dbUser == null
-                || _passwordHasher.VerifyHashedPassword(dbUser.Password, user.Password) == PasswordVerificationResult.Failed)
+                || _passwordHasher.VerifyHashedPassword(dbUser.Password, request.Password) == PasswordVerificationResult.Failed)
             {
                 throw new InvalidUsernamePasswordException("Invalid username or password");
             }
 
             return new AuthenticatedUser()
             {
-                Username = user.Name,
-                Token = JwtGenerator.GenerateUserToken(user.Name)
+                Username = request.Name,
+                Token = JwtGenerator.GenerateUserToken(request.Name)
             };
         }
 
-        public async Task<AuthenticatedUser> SignUp(User user)
+        public async Task<AuthenticatedUser> SignUp(SignUpRequest request)
         {
             var checkUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Name.Equals(user.Name));
+                .FirstOrDefaultAsync(u => u.Name.Equals(request.Name));
 
             // User Already exists, throwing an exception
             if (checkUser != null)
@@ -48,14 +48,35 @@ namespace POS.Core
                 throw new UsernameAlreadyExistsException("Username already exists");
             }
 
-            user.Password = _passwordHasher.HashPassword(user.Password);
-            await _context.AddAsync(user);
+            var newUser = new User
+            {
+                Name = request.Name,
+                LastName = request.LastName,
+                Password = request.Password,
+                Email = request.Email,
+                PhoneNo = request.PhoneNo,
+            };
+
+            newUser.Password = _passwordHasher.HashPassword(newUser.Password);
+
+
+            // Fetch related entities based on associations
+            if(request.BusinessId > 0)
+            {
+                newUser.Business = _context.Businesss.Find(request.BusinessId);
+                if(newUser.Business != null)
+                {
+                    newUser.BusinessId = request.BusinessId;
+                }
+            }
+
+            await _context.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
             return new AuthenticatedUser
             {
-                Username = user.Name,
-                Token = JwtGenerator.GenerateUserToken(user.Name)
+                Username = newUser.Name,
+                Token = JwtGenerator.GenerateUserToken(newUser.Name)
             };
         }
     }

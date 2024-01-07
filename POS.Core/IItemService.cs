@@ -6,7 +6,7 @@ namespace POS.Core
 {
     public interface IItemService
     {
-        Item CreateItem(CreateItemRequest request);
+        Item? CreateItem(CreateItemRequest request);
 
         Item UpdateItem(EditItemRequest request);
 

@@ -13,8 +13,22 @@ namespace POS.Core
             _context = context;
         }
 
-        public Item CreateItem(CreateItemRequest request)
+        public Item? CreateItem(CreateItemRequest request)
         {
+            // Find corresponding business
+            var business = _context.Businesss.Find(request.BusinessId);
+            if (business == null)
+            {
+                return null;
+            }
+
+            // Find corresponding tax
+            var tax = _context.Tax.Find(request.DefaultTaxId);
+            if (tax == null)
+            {
+                return null;
+            }
+
             var newItem = new DB.Models.Item
             {
                 Name = request.Name,
@@ -24,26 +38,13 @@ namespace POS.Core
                 Type = request.Type,
 
                 ServiceDuration = request.ServiceDuration,
+
+                BusinessId = request.DefaultTaxId,
+                DefaultTaxId = request.DefaultTaxId,
+
+                Business = business,
+                DefaultTax = tax,
             };
-
-            // Fetch related entities based on relationships
-            if (request.BusinessId > 0)
-            {
-                newItem.Business = _context.Businesss.Find(request.BusinessId);
-                if (newItem.Business != null)
-                {
-                    newItem.BusinessId = request.BusinessId;
-                }
-            }
-
-            if (request.DefaultTaxId > 0)
-            {
-                newItem.DefaultTax = _context.Tax.Find(request.DefaultTaxId);
-                if (newItem.DefaultTax != null)
-                {
-                    newItem.DefaultTaxId = request.DefaultTaxId;
-                }
-            }
 
             // Associate the item with categories
             if (request.CategoryIds != null && request.CategoryIds.Any())

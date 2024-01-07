@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using POS.Core;
+using POS.Core.DTO;
 using POS.DB.Models;
 
 namespace POS.WebApi.Controllers
@@ -35,9 +36,9 @@ namespace POS.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateBusiness(Business business)
+        public IActionResult CreateBusiness(CreateBusinessRequest business)
         {
-            var newBusiness = _businessService.CreateBusiness(business);
+            var newBusiness = _businessService.CreateBusiness(business.BusinessName);
             return CreatedAtRoute("GetBusinessById", new { id = newBusiness.Id }, newBusiness);
         }
 

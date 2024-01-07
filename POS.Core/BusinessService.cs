@@ -12,12 +12,17 @@ namespace POS.Core
             _context = context;
         }
 
-        public Business CreateBusiness(Business business)
+        public Business CreateBusiness(string businessName)
         {
-            _context.Businesss.Add(business);
+            var business = new Business
+            {
+                Name = businessName
+            };
+
+            var track = _context.Businesss.Add(business);
             _context.SaveChanges();
 
-            return business;
+            return track.Entity;
         }
 
         public Business GetBusinessById(int id) => _context.Businesss.FirstOrDefault(b => b.Id == id);

@@ -1,4 +1,5 @@
-﻿using POS.DB;
+﻿using POS.Core.DTO;
+using POS.DB;
 using POS.DB.Models;
 
 namespace POS.Core
@@ -28,6 +29,15 @@ namespace POS.Core
         public Business GetBusinessById(int id) => _context.Businesss.FirstOrDefault(b => b.Id == id);
 
         public Business GetBusinessByName(string name) => _context.Businesss.FirstOrDefault(b => b.Name == name);
+
+        public List<EmployeeInfo> GetBusinessEmployees(int id)
+        {
+            return _context.Users.Where(u => u.BusinessId == id).Select(u => new EmployeeInfo
+            {
+                Id = u.Id,
+                Name = u.Name
+            }).ToList();
+        }
 
         public List<Business> GetBusinesses()
         {

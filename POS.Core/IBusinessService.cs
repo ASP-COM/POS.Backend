@@ -9,5 +9,6 @@ namespace POS.Core
         Business GetBusinessById(int id);
         Business GetBusinessByName(string name);
         Business CreateBusiness(string businessName);
+        List <EmployeeInfo>? GetBusinessEmployees(int id);
     }
 }

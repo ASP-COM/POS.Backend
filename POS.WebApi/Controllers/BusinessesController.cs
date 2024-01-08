@@ -42,6 +42,11 @@ namespace POS.WebApi.Controllers
             return CreatedAtRoute("GetBusinessById", new { id = newBusiness.Id }, newBusiness);
         }
 
-
+        [HttpGet("{id}/employees", Name = "GetBusinessEmployees")]
+        public IActionResult GetBusinessEmployees(int id)
+        {
+            var employees = _businessService.GetBusinessEmployees(id);
+            return employees == null ? NotFound() : Ok(employees);
+        }
     }
 }

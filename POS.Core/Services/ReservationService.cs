@@ -1,4 +1,4 @@
-﻿using POS.Core.DTO;
+using POS.Core.DTO;
 using POS.DB;
 using POS.DB.Models;
 
@@ -91,7 +91,8 @@ namespace POS.Core.Services
 
         public List<Reservation> GetFreeReservationsStartingOnDate(int? employeeId, int? serviceId, DateOnly start)
         {
-            var query = _context.Reservations.Where(i => i.IsReserved == false && DateOnly.FromDateTime(i.ResStart) == start);
+            var start_dt = start.ToDateTime(TimeOnly.MinValue).Date;
+            var query = _context.Reservations.Where(i => i.IsReserved == false && i.ResStart.Date == start_dt);
             if (employeeId != null) {
                 query = query.Where(i => i.ProvidingEmployee.Id == employeeId);
             }

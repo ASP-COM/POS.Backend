@@ -1,12 +1,10 @@
-﻿using POS.DB.Models;
-
-namespace POS.Core.DTO
+﻿namespace POS.Core.DTO
 {
     public class GetAvailableDaysRequest
     {
-        public int? employeeId {get; set;}
-        public int? serviceId {get; set;}
-        public DateOnly start {get; set;}
-        public DateOnly? end {get; set;}
+        public int? EmployeeId {get; set;}
+        public int? ServiceId {get; set;}
+        public DateOnly Start {get; set;}
+        public DateOnly? End {get; set;}
     }
 }

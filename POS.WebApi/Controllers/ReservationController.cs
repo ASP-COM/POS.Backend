@@ -117,10 +117,10 @@ namespace POS.WebApi.Controllers
         }
 
         [HttpGet("get_free_reservations")]
-        public IActionResult GetFreeReservations(int employeeId, int serviceId, DateOnly start)
+        public IActionResult GetFreeReservations(FreeReservationsRequest request)
         {
             try {
-                var result = _reservationService.GetFreeReservationsStartingOnDate(employeeId, serviceId, start);
+                var result = _reservationService.GetFreeReservationsStartingOnDate(request.EmployeeId, request.ServiceId, request.Start);
                 return Ok(result);
             } catch {
                 return StatusCode(400, "An error occured");
@@ -130,7 +130,7 @@ namespace POS.WebApi.Controllers
         [HttpGet("get_free_days")]
         public IActionResult GetFreeDays(GetAvailableDaysRequest request)
         {
-            var result = _reservationService.GetDatesWithFreeReservationsInRange(request.employeeId, request.serviceId, request.start, request.end);
+            var result = _reservationService.GetDatesWithFreeReservationsInRange(request.EmployeeId, request.ServiceId, request.Start, request.End);
             return Ok(result);
         }
     }

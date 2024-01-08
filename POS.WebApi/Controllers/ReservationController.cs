@@ -130,7 +130,7 @@ namespace POS.WebApi.Controllers
         [HttpGet("get_free_days")]
         public IActionResult GetFreeDays(GetAvailableDaysRequest request)
         {
-            var result = _reservationService.GetDatesWithFreeReservationsInRange(request.EmployeeId, request.ServiceId, request.Start, request.End);
+            var result = _reservationService.GetDatesWithFreeReservationsInRange(request.BusinessId, request.EmployeeId, request.ServiceId, request.Start, request.End);
             return Ok(result);
         }
     }

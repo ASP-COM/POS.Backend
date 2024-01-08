@@ -1,4 +1,4 @@
-using POS.Core.DTO;
+﻿using POS.Core.DTO;
 using POS.DB;
 using POS.DB.Models;
 
@@ -69,7 +69,7 @@ namespace POS.Core.Services
             return true;
         }
 
-        public List<DateOnly> GetDatesWithFreeReservationsInRange(int? employeeId, int? serviceId, DateOnly start, DateOnly? end)
+        public List<DateOnly> GetDatesWithFreeReservationsInRange(int? businessId, int? employeeId, int? serviceId, DateOnly start, DateOnly? end)
         {
             var start_dt = start.ToDateTime(TimeOnly.MinValue);
             var query = _context.Reservations.Where(i => i.IsReserved == false);
@@ -79,6 +79,9 @@ namespace POS.Core.Services
             if (serviceId != null) {
                 query = query.Where(i => i.Service.Id == serviceId);
             }
+            if (businessId != null) {
+                query = query.Where(i => i.Service.BusinessId == businessId);
+            }
             if (end != null) {
                 var end_dt = end.Value.ToDateTime(TimeOnly.MinValue);
                 query = query.Where(i => i.ResStart.Date >= start_dt.Date && i.ResStart.Date <= end_dt.Date);
@@ -86,7 +89,7 @@ namespace POS.Core.Services
                 query = query.Where(i => i.ResStart.Date == start_dt.Date);
             }
 
-            return query.Select(i => i.ResStart.Date).ToList().Select(i => DateOnly.FromDateTime(i)).ToList();
+            return query.Select(i => i.ResStart.Date).Distinct().ToList().Select(i => DateOnly.FromDateTime(i)).ToList();
         }
 
         public List<Reservation> GetFreeReservationsStartingOnDate(int? employeeId, int? serviceId, DateOnly start)

@@ -5,6 +5,7 @@ using POS.Core;
 using Microsoft.AspNet.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using POS.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IWorkingHoursService, WorkingHoursService>();
 builder.Services.AddTransient<IVoucherService, VoucherService>();
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<IReservationService, ReservationService>();
 
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
 var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER");

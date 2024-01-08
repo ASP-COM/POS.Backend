@@ -33,7 +33,11 @@ namespace POS.WebApi.Controllers
         public IActionResult CreateItem(CreateItemRequest request)
         {
             var newItem = _itemService.CreateItem(request);
-            return CreatedAtRoute("GetItemById", new {id = newItem.Id}, newItem);
+            if (newItem == null) {
+                return BadRequest("Invalid request");
+            } else {
+                return CreatedAtRoute("GetItemById", new {id = newItem.Id}, newItem);
+            }
         }
 
         [HttpGet("{id}", Name = "GetItemById")]

@@ -1,4 +1,5 @@
-﻿using POS.DB.Models;
+﻿using POS.Core.DTO;
+using POS.DB.Models;
 
 namespace POS.Core
 {
@@ -7,7 +8,6 @@ namespace POS.Core
         List<Business> GetBusinesses();
         Business GetBusinessById(int id);
         Business GetBusinessByName(string name);
-
-        Business CreateBusiness(Business business);
+        Business CreateBusiness(string businessName);
     }
 }

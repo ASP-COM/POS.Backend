@@ -32,6 +32,7 @@ namespace POS.Core
 
             return new AuthenticatedUser()
             {
+                Id = dbUser.Id,
                 Username = request.Name,
                 Token = JwtGenerator.GenerateUserToken(request.Name)
             };
@@ -59,7 +60,6 @@ namespace POS.Core
 
             newUser.Password = _passwordHasher.HashPassword(newUser.Password);
 
-
             // Fetch related entities based on associations
             if(request.BusinessId > 0)
             {
@@ -75,6 +75,7 @@ namespace POS.Core
 
             return new AuthenticatedUser
             {
+                Id = newUser.Id,
                 Username = newUser.Name,
                 Token = JwtGenerator.GenerateUserToken(newUser.Name)
             };

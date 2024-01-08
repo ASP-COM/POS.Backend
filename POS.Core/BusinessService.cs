@@ -39,6 +39,17 @@ namespace POS.Core
             }).ToList();
         }
 
+        public List<ServiceInfo> GetBusinessServices(int id)
+        {
+            return _context.Items.Where(u => u.BusinessId == id && u.Type == DB.Enums.ItemType.Service).Select(u => new ServiceInfo
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Price = u.Price,
+                Duration = u.ServiceDuration.Value,
+            }).ToList();
+        }
+
         public List<Business> GetBusinesses()
         {
             return _context.Businesss.ToList();

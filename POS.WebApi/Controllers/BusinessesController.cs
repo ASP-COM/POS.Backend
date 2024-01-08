@@ -48,5 +48,12 @@ namespace POS.WebApi.Controllers
             var employees = _businessService.GetBusinessEmployees(id);
             return employees == null ? NotFound() : Ok(employees);
         }
+
+        [HttpGet("{id}/services", Name = "GetBusinessServices")]
+        public IActionResult GetBusinessServices(int id)
+        {
+            var employees = _businessService.GetBusinessServices(id);
+            return employees == null ? NotFound() : Ok(employees);
+        }
     }
 }

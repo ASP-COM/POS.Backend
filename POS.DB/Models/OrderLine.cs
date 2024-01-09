@@ -16,7 +16,13 @@ namespace POS.DB.Models
 
         public Item Item { get; set; }
 
+        [ForeignKey("ItemId")]
+        public int ItemId { get; set; }
+
         public Discount? Discount { get; set; }
+
+        [ForeignKey("AppliedTaxId")]
+        public int AppliedTaxId { get; set; }   
 
         public Tax AppliedTax { get; set; }
         public Order Order { get; set; }

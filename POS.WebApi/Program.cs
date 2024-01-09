@@ -24,6 +24,7 @@ builder.Services.AddTransient<IWorkingHoursService, WorkingHoursService>();
 builder.Services.AddTransient<IVoucherService, VoucherService>();
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
 var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER");

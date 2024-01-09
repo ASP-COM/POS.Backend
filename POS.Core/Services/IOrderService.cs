@@ -13,7 +13,6 @@ namespace POS.Core.Services
         bool RemoveItems(int orderId, List<int> itemIds);
 
         bool ApplyVoucher(int orderId, int voucherId);
-
-
+        InvoiceResponse? GetOrderInvoice(int orderId);
     }
 }

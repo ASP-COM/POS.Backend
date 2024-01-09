@@ -1,10 +1,13 @@
 ﻿using Azure.Core;
+using Microsoft.AspNet.Identity;
 using POS.Core.DTO;
 using POS.DB;
 using POS.DB.Enums;
 using POS.DB.Models;
+using System.ComponentModel.DataAnnotations;
 using Item = POS.DB.Models.Item;
 using Tax = POS.DB.Models.Tax;
+using Voucher = POS.DB.Models.Voucher;
 
 namespace POS.Core.Services
 {
@@ -304,6 +307,46 @@ namespace POS.Core.Services
 
             _context.SaveChanges();
 
+            return true;
+        }
+        public bool ApplyVoucher(int orderId, int voucherId)
+        {
+            var voucher = _context.Voucher.Find(voucherId);
+            if(voucher == null)
+            {
+                return false;
+            }
+            var order = _context.Orders.Find(orderId);
+            if (order == null)
+            {
+                return false;
+            }
+
+            if (voucher.IsUsed)
+            {
+                return false;
+            }
+
+            // Check if the current date is within the validity period
+            DateTime currentDateTime = DateTime.Now;
+            if (currentDateTime < voucher.ValidFrom && currentDateTime > voucher.ValidTo)
+            {
+                return false; 
+            }
+
+            // Add order to voucher
+            voucher.OrderId = orderId;
+            voucher.Order = order;
+            voucher.IsUsed = true;
+
+            // Add voucher to order
+            if (order.Vouchers == null)
+            {
+                order.Vouchers = new List<Voucher>();   
+            }
+            order.Vouchers.Add(voucher);
+
+            _context.SaveChanges();
             return true;
         }
 

@@ -80,13 +80,16 @@ namespace POS.WebApi.Controllers
             }
         }
 
-        // TODO here voucher should be used and applied to order
-        // Optional (in future): Id of voucher can not be integer, but someting more sofisticated
-        // Bussiness from which Voucher/Item arive is important
-        [HttpPatch("{id}/apply_voucher")]
-        public IActionResult ApplyVoucher(int voucher_id) 
+        [HttpPatch("{id}/apply_voucher", Name = "ApplyVoucher")]
+        public IActionResult ApplyVoucher(int id, int voucherId) 
         {
-            return Ok();
+            if(_orderService.ApplyVoucher(id, voucherId)) { 
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // TODO: If card exists apply discounts and assign holder of card to the report as customer

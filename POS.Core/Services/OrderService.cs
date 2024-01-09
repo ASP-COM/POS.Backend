@@ -361,5 +361,52 @@ namespace POS.Core.Services
             var uniqueItems = new HashSet<int>();
             return list.Any(item => !uniqueItems.Add(item.ItemId));
         }
+
+        public bool ApplyDiscount(int orderId, int discountId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InvoiceResponse? GetOrderInvoice(int orderId)
+        {
+            var order = _context.Orders.Find(orderId);
+            if (order == null || order.PaidDate == null)
+            {
+                return null;
+            }
+
+            var items = new List<InvoiceItem>();
+            if (order.OrderLines != null) {
+                for (int i = 0; i < order.OrderLines.Count; i++)
+                {
+                    var tax = _context.Tax.Find(order.OrderLines[i].AppliedTaxId)?.AmountPct ?? 0;
+                    var invoice_item = new InvoiceItem
+                    {
+                        UnitPrice = order.OrderLines[i].UnitPrice,
+                        UnitCount = order.OrderLines[i].UnitCount,
+                        ItemId = order.OrderLines[i].ItemId,
+                        AppliedDiscount = 0, // FIXME: Calculate discount
+                        AppliedTax = 0
+                    };
+                    invoice_item.AppliedTax = invoice_item.UnitPrice * invoice_item.UnitCount * tax;
+                    items.Add(invoice_item);
+                }
+            }
+
+            var TotalSum = items.Sum(item => item.UnitPrice * item.UnitCount + item.AppliedTax);
+
+            return new InvoiceResponse
+            {
+                Id = order.Id,
+                TotalSum = TotalSum,
+                TipAmount = order.TipAmount,
+                PaidDate = order.PaidDate.Value,
+                PaymentMethod = order.PaymentMethod,
+                CustomerId = order.CustomerId,
+                EmployeeId = order.EmployeeId,
+                BusinessId = order.Employee?.BusinessId,
+                InvoiceItems = items
+            };
+        }
     }
 }

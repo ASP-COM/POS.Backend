@@ -117,9 +117,17 @@ namespace POS.WebApi.Controllers
 
         // TODO: calculate and return receipt (invoice) - a big and important one 
         [HttpGet("{id}/invoice")]
-        public IActionResult GenerateInvoice() // Create new DTO for calculations
+        public IActionResult GenerateInvoice(int orderId) // Create new DTO for calculations
         {
-            return Ok();
+            var invoice = _orderService.GetOrderInvoice(orderId);
+            if (invoice != null)
+            {
+                return Ok(invoice);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
 

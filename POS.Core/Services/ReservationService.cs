@@ -66,7 +66,7 @@ namespace POS.Core.Services
 
             reservation.IsReserved = false;
             reservation.Customer = null;
-            reservation.CustomerId = 0;
+            reservation.CustomerId = null;
             // FIXME: Check if this does anything
             _context.SaveChanges();
             return true;

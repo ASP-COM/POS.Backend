@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace POS.DB.Models
 {
@@ -25,6 +26,8 @@ namespace POS.DB.Models
         public int AppliedTaxId { get; set; }   
 
         public Tax AppliedTax { get; set; }
+
+        [JsonIgnore]
         public Order Order { get; set; }
 
     }

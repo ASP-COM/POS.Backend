@@ -15,6 +15,7 @@ namespace POS.Core.Services
 
         InvoiceResponse? PayForOrder(int orderId, string paymentType);
         InvoiceResponse? AddTip(int orderId, decimal tipAmount);
+        InvoiceResponse? PayForReservation(PayForReservationRequest request);
 
         InvoiceResponse? GetOrderInvoice(int orderId);
         bool CancelOrder(int orderId);

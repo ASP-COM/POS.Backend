@@ -17,5 +17,6 @@ namespace POS.Core.Services
         bool PayForOrder(int orderId, string paymentType);
         bool AddTip(int orderId, decimal tipAmount);
 
+        InvoiceResponse? GetOrderInvoice(int orderId);
     }
 }

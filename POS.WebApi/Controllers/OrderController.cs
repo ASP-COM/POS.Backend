@@ -99,20 +99,30 @@ namespace POS.WebApi.Controllers
             return Ok();
         }
 
-        // TODO: mark order as payed
-        // Type should be provided here can be only: Card, cash or none if whole price was coverted by vouchers.
-        // But additional checks for voucher use should be made to set the final status.
-        [HttpPatch("{id}/pay")]
-        public IActionResult PayForOrder() 
+        [HttpPatch("{id}/pay", Name= "PayForOrder")]
+        public IActionResult PayForOrder(int id, string type) 
         {
-            return Ok();
+            if(_orderService.PayForOrder(id, type))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
-       // TODO: update the tip
-       [HttpPatch("{id}/add_tip")]
-        public IActionResult AddTip(decimal tip) // Apply tip
+        [HttpPatch("{id}/add_tip", Name = "AddTip")]
+        public IActionResult AddTip(int id, decimal tip) // Apply tip
         {
-            return Ok();
+            if (_orderService.AddTip(id, tip))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // TODO: calculate and return receipt (invoice) - a big and important one 

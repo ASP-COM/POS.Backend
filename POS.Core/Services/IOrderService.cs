@@ -14,6 +14,8 @@ namespace POS.Core.Services
 
         bool ApplyVoucher(int orderId, int voucherId);
 
+        bool PayForOrder(int orderId, string paymentType);
+        bool AddTip(int orderId, decimal tipAmount);
 
     }
 }

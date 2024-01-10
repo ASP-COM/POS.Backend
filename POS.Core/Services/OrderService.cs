@@ -350,6 +350,67 @@ namespace POS.Core.Services
             return true;
         }
 
+        public bool PayForOrder(int orderId, string paymentType)
+        {
+            var order = _context.Orders.Find(orderId);
+            if (order == null)
+            {
+                return false;
+            }
+            if (order.Status != OrderStatus.Pending)
+            {
+                return false;
+            }
+
+            if(order.Vouchers != null && order.Vouchers.Any())
+            {
+                //TODO check if fully paid by voucher
+
+            }
+            else
+            {
+                if(paymentType == "Cash")
+                {
+                    order.PaymentMethod = PaymentMethod.Cash;
+                }
+                else if(paymentType == "Card")
+                {
+                    order.PaymentMethod = PaymentMethod.Card;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            order.Status = OrderStatus.Paid;
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool AddTip(int orderId, decimal tipAmount)
+        {
+            if(tipAmount < 0)
+            {
+                return false;
+            }
+
+            var order = _context.Orders.Find(orderId);
+            if (order == null)
+            {
+                return false;
+            }
+            if (order.Status != OrderStatus.Pending)
+            {
+                return false;
+            }
+
+            order.TipAmount = tipAmount;
+
+            _context.SaveChanges();
+            return true;
+        }
+
         // Helper functions
         public DateTime GeneratePendingUntilDate(DateTime creationDate) //TODO: Add actuall pending time
         {

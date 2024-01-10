@@ -30,7 +30,8 @@ namespace POS.Core.Services
                 ResEnd = request.ResStart.Add(item.ServiceDuration.Value),
                 IsReserved = false,
                 ProvidingEmployee = employee,
-                Service = item
+                Service = item,
+                ServiceId = request.ServiceId,
             };
             var tracking = _context.Reservations.Add(reservation);
             _context.SaveChanges();
@@ -49,6 +50,7 @@ namespace POS.Core.Services
                 return false;
             }
 
+            reservation.CustomerId = userId;
             reservation.Customer = user;
             reservation.IsReserved = true;
             _context.SaveChanges();
@@ -64,6 +66,7 @@ namespace POS.Core.Services
 
             reservation.IsReserved = false;
             reservation.Customer = null;
+            reservation.CustomerId = 0;
             // FIXME: Check if this does anything
             _context.SaveChanges();
             return true;

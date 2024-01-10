@@ -14,11 +14,13 @@ namespace POS.WebApi.Controllers
 
         private readonly IUserService _userService;
         private readonly IReservationService _reservationService;
+        private readonly IOrderService _orderService;
 
-        public ReservationController(IUserService userService, IReservationService reservationService)
+        public ReservationController(IUserService userService, IReservationService reservationService, IOrderService orderService)
         {
             _userService = userService;
             _reservationService = reservationService;
+            _orderService = orderService;
         }
 
         [HttpPost("create_reservation_slot")]
@@ -132,6 +134,17 @@ namespace POS.WebApi.Controllers
         {
             var result = _reservationService.GetDatesWithFreeReservationsInRange(request.BusinessId, request.EmployeeId, request.ServiceId, request.Start, request.End);
             return Ok(result);
+        }
+
+        [HttpPatch("pay_for_reservation")]
+        public IActionResult PayForReservation(PayForReservationRequest request)
+        {
+            var result = _orderService.PayForReservation(request);
+            if (result != null) {
+                return Ok(result);
+            } else {
+                return StatusCode(400, "An error occured");
+            }
         }
     }
 }

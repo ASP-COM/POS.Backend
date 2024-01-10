@@ -384,6 +384,77 @@ namespace POS.Core.Services
             return GetOrderInvoice(orderId);
         }
 
+        public InvoiceResponse? PayForReservation(PayForReservationRequest request)
+        {
+            // Convert reservation into order
+            var reservation = _context.Reservations.Find(request.ReservationId);
+            if (reservation == null || reservation.IsReserved.GetValueOrDefault(false) == false || reservation.CustomerId == null )
+            {
+                return null;
+            }
+            
+            var service = _context.Items.Find(reservation.ServiceId);
+            if (service == null)
+            {
+                return null;
+            }
+
+            var tax = _context.Tax.Find(service.DefaultTaxId);
+            if (tax == null)
+            {
+                return null;
+            }
+            
+            var orderline = new OrderLine
+            {
+                UnitPrice = service.Price,
+                UnitCount = 1,
+                Item = service,
+                ItemId = service.Id,
+                AppliedTax = tax,
+                AppliedTaxId = tax.Id,
+                OrderId = 0,
+                LineId = 0
+            };
+            
+            _context.OrdersLine.Add(orderline);
+            
+            var customer = _context.User.Find(reservation.CustomerId);
+            if (customer == null)
+            {
+                return null;
+            }
+
+            var employee = _context.User.Find(reservation.EmployeeId);
+            if (employee == null)
+            {
+                return null;
+            }
+            
+            var order = new Order
+            {
+                TipAmount = request.TipAmount,
+                CreationDate = DateTime.Now,
+                PaidDate = DateTime.Now,
+                PendingUntil = GeneratePendingUntilDate(DateTime.Now),
+                Status = OrderStatus.Pending,
+                PaymentMethod = PaymentMethod.None,
+                Customer = customer,
+                CustomerId = customer.Id,
+                Employee = employee,
+                EmployeeId = employee.Id,
+                OrderLines = new List<OrderLine>
+                {
+                    orderline
+                }
+            };
+
+            var ent = _context.Orders.Add(order);
+            _context.SaveChanges();
+            return PayForOrder(ent.Entity.Id, request.PaymentType);
+        }
+
+
         public InvoiceResponse? AddTip(int orderId, decimal tipAmount)
         {
             if(tipAmount < 0)

@@ -4,6 +4,7 @@ using POS.Core.DTO;
 using POS.DB;
 using POS.DB.Enums;
 using POS.DB.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Item = POS.DB.Models.Item;
 using Tax = POS.DB.Models.Tax;
@@ -18,7 +19,7 @@ namespace POS.Core.Services
         {
             _context = context;
         }
-        public Order? CreateNewOrder(CreateOrderRequest request)
+        public InvoiceResponse? CreateNewOrder(CreateOrderRequest request)
         {
             // Find if customer exist 
             var customer = _context.User.Find(request.CustomerId);
@@ -128,7 +129,7 @@ namespace POS.Core.Services
             }
 
             _context.SaveChanges();
-            return newOrder;
+            return GetOrderInvoice(newOrder.Id);
         }
 
         public bool CancelOrder(int orderId)
@@ -159,9 +160,7 @@ namespace POS.Core.Services
 
             return true;
         }
-
-        // General TODO: recheck for any discounts
-        public Order? AddAdditionalItems(int orderId, List<CreateOrderLineRequest> request)
+        public InvoiceResponse? AddAdditionalItems(int orderId, List<CreateOrderLineRequest> request)
         {
             // Find employee  
             var order = _context.Orders.Find(orderId);
@@ -273,25 +272,25 @@ namespace POS.Core.Services
             }
 
             _context.SaveChanges();
-            return order;
+            return GetOrderInvoice(orderId); 
         }
 
-        public bool RemoveItems(int orderId, List<int> itemIds)
+        public InvoiceResponse? RemoveItems(int orderId, List<int> itemIds)
         {
             // Find employee  
             var order = _context.Orders.Find(orderId);
             if (order == null)
             {
-                return false;
+                return null;
             }
             if (order.Status != OrderStatus.Pending)
             {
-                return false;
+                return null;
             }
 
             if (itemIds == null || !itemIds.Any())
             {
-                return false;
+                return null;
             }
 
 
@@ -307,31 +306,31 @@ namespace POS.Core.Services
 
             _context.SaveChanges();
 
-            return true;
+            return GetOrderInvoice(orderId);
         }
-        public bool ApplyVoucher(int orderId, int voucherId)
+        public InvoiceResponse? ApplyVoucher(int orderId, int voucherId)
         {
             var voucher = _context.Voucher.Find(voucherId);
             if(voucher == null)
             {
-                return false;
+                return null;
             }
             var order = _context.Orders.Find(orderId);
             if (order == null)
             {
-                return false;
+                return null;
             }
 
             if (voucher.IsUsed)
             {
-                return false;
+                return null;
             }
 
             // Check if the current date is within the validity period
             DateTime currentDateTime = DateTime.Now;
             if (currentDateTime < voucher.ValidFrom && currentDateTime > voucher.ValidTo)
             {
-                return false; 
+                return null; 
             }
 
             // Add order to voucher
@@ -347,100 +346,86 @@ namespace POS.Core.Services
             order.Vouchers.Add(voucher);
 
             _context.SaveChanges();
-            return true;
+            return GetOrderInvoice(orderId);
         }
 
-        public bool PayForOrder(int orderId, string paymentType)
+        public InvoiceResponse? PayForOrder(int orderId, string paymentType)
         {
             var order = _context.Orders.Find(orderId);
             if (order == null)
             {
-                return false;
+                return null;
             }
             if (order.Status != OrderStatus.Pending)
             {
-                return false;
+                return null;
             }
 
-            if(order.Vouchers != null && order.Vouchers.Any())
-            {
-                //TODO check if fully paid by voucher
-
-            }
             else
             {
-                if(paymentType == "Cash")
+                if (paymentType == "cash")
                 {
                     order.PaymentMethod = PaymentMethod.Cash;
                 }
-                else if(paymentType == "Card")
+                else if(paymentType == "card")
                 {
                     order.PaymentMethod = PaymentMethod.Card;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
 
+            order.PaidDate = DateTime.Now;
             order.Status = OrderStatus.Paid;
             _context.SaveChanges();
-            return true;
+
+            return GetOrderInvoice(orderId);
         }
 
-        public bool AddTip(int orderId, decimal tipAmount)
+        public InvoiceResponse? AddTip(int orderId, decimal tipAmount)
         {
             if(tipAmount < 0)
             {
-                return false;
+                return null;
             }
 
             var order = _context.Orders.Find(orderId);
             if (order == null)
             {
-                return false;
+                return null;
             }
             if (order.Status != OrderStatus.Pending)
             {
-                return false;
+                return null;
             }
 
             order.TipAmount = tipAmount;
 
             _context.SaveChanges();
-            return true;
-        }
-
-        // Helper functions
-        public DateTime GeneratePendingUntilDate(DateTime creationDate) //TODO: Add actuall pending time
-        {
-            return creationDate.AddDays(7);
-        }
-
-        public static bool HasItemDuplicates(List<CreateOrderLineRequest> list)
-        {
-            var uniqueItems = new HashSet<int>();
-            return list.Any(item => !uniqueItems.Add(item.ItemId));
+            return GetOrderInvoice(orderId);
         }
 
         public InvoiceResponse? GetOrderInvoice(int orderId)
         {
             var order = _context.Orders.Find(orderId);
-            if (order == null || order.PaidDate == null)
+            if (order == null)
             {
                 return null;
             }
 
             var items = new List<InvoiceItem>();
-            if (order.OrderLines != null) {
-                for (int i = 0; i < order.OrderLines.Count; i++)
+            List<OrderLine>? orderLineList = _context.OrdersLine.Where(i => i.OrderId == orderId).Select(i => i).ToList();
+            if (orderLineList != null) {
+                for (int i = 0; i < orderLineList.Count; i++)
                 {
-                    var tax = _context.Tax.Find(order.OrderLines[i].AppliedTaxId)?.AmountPct ?? 0;
+                    var tax = _context.Tax.Find(orderLineList[i].AppliedTaxId)?.AmountPct ?? 0;
                     var invoice_item = new InvoiceItem
                     {
-                        UnitPrice = order.OrderLines[i].UnitPrice,
-                        UnitCount = order.OrderLines[i].UnitCount,
-                        ItemId = order.OrderLines[i].ItemId,
+                        UnitPrice = orderLineList[i].UnitPrice,
+                        UnitCount = orderLineList[i].UnitCount,
+                        ItemId = orderLineList[i].ItemId,
                         AppliedDiscount = 0, // FIXME: Calculate discount
                         AppliedTax = 0
                     };
@@ -449,20 +434,52 @@ namespace POS.Core.Services
                 }
             }
 
-            var TotalSum = items.Sum(item => item.UnitPrice * item.UnitCount + item.AppliedTax);
+            List<InvoiceVoucher> invoicedVoucherList = new List<InvoiceVoucher>();
+            decimal payedByVouchersAmount = 0;
 
+            List<Voucher> vouchers = _context.Voucher.Where(i => i.OrderId == orderId).Select(i => i).ToList();
+            InvoiceVoucher newInvoiceVoucher;
+            foreach (Voucher voucher in vouchers)
+            {
+                newInvoiceVoucher = new InvoiceVoucher
+                {
+                    Id = voucher.Id,
+                    Amount = voucher.Amount
+                };
+                invoicedVoucherList.Add(newInvoiceVoucher);
+                payedByVouchersAmount += voucher.Amount;
+            }
+            
+
+            var TotalSum = items.Sum(item => item.UnitPrice * item.UnitCount + item.AppliedTax);
+            DateTime? paidDate = order.PaidDate == null ? null : order.PaidDate.Value;
             return new InvoiceResponse
             {
                 Id = order.Id,
                 TotalSum = TotalSum,
                 TipAmount = order.TipAmount,
-                PaidDate = order.PaidDate.Value,
+                Status = order.Status,
+                PaidDate = paidDate,
                 PaymentMethod = order.PaymentMethod,
                 CustomerId = order.CustomerId,
                 EmployeeId = order.EmployeeId,
                 BusinessId = order.Employee?.BusinessId,
-                InvoiceItems = items
+                InvoiceItems = items,
+                PayedByVouchersAmount = payedByVouchersAmount,
+                InvoiceVouchers = invoicedVoucherList
             };
+        }
+
+        // Helper functions
+        private DateTime GeneratePendingUntilDate(DateTime creationDate) 
+        {
+            return creationDate.AddDays(7);
+        }
+
+        private static bool HasItemDuplicates(List<CreateOrderLineRequest> list)
+        {
+            var uniqueItems = new HashSet<int>();
+            return list.Any(item => !uniqueItems.Add(item.ItemId));
         }
     }
 }

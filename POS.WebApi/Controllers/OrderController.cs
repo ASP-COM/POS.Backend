@@ -26,13 +26,13 @@ namespace POS.WebApi.Controllers
             {
                 var newOrder = _orderService.CreateNewOrder(createOrderRequest);
                 if(newOrder != null){
-                    return CreatedAtRoute(new { id = newOrder.Id }, newOrder);
+                    return Ok(newOrder);
                 }
                 return BadRequest("Invalid request");
 
-            } catch
+            } catch(Exception ex) 
             {
-                return BadRequest("An error occured");
+                return BadRequest("An error occured" + ex.Message);
             }
         }
 
@@ -57,7 +57,7 @@ namespace POS.WebApi.Controllers
                 var updatedOrder = _orderService.AddAdditionalItems(id, orderLineRequest);
                 if (updatedOrder != null)
                 {
-                    return CreatedAtRoute(new { id = updatedOrder.Id }, updatedOrder);
+                    return Ok(updatedOrder);
                 }
                 return BadRequest("Invalid request");
             }
@@ -70,9 +70,10 @@ namespace POS.WebApi.Controllers
         [HttpPatch("{id}/remove_items", Name = "RemoveItems")]
         public IActionResult RemoveItems(int id, List<int> itemsIds) 
         {
-            if (_orderService.RemoveItems(id, itemsIds))
+            var updatedOrder = _orderService.RemoveItems(id, itemsIds);
+            if (updatedOrder != null)
             {
-                return Ok();
+                return Ok(updatedOrder);
             }
             else
             {
@@ -83,8 +84,9 @@ namespace POS.WebApi.Controllers
         [HttpPatch("{id}/apply_voucher", Name = "ApplyVoucher")]
         public IActionResult ApplyVoucher(int id, int voucherId) 
         {
-            if(_orderService.ApplyVoucher(id, voucherId)) { 
-                return Ok();
+            var updatedOrder = _orderService.ApplyVoucher(id, voucherId);
+            if (updatedOrder != null) { 
+                return Ok(updatedOrder);
             }
             else
             {
@@ -92,19 +94,13 @@ namespace POS.WebApi.Controllers
             }
         }
 
-        // TODO: If card exists apply discounts and assign holder of card to the report as customer
-        [HttpPatch("{id}/apply_discount_card")]
-        public IActionResult ApplyDiscount(int dicountCardId)
-        {
-            return Ok();
-        }
-
         [HttpPatch("{id}/pay", Name= "PayForOrder")]
         public IActionResult PayForOrder(int id, string type) 
         {
-            if(_orderService.PayForOrder(id, type))
+            var updatedOrder = _orderService.PayForOrder(id, type.ToLower());
+            if (updatedOrder != null)
             {
-                return Ok();
+                return Ok(updatedOrder);
             }
             else
             {
@@ -115,9 +111,10 @@ namespace POS.WebApi.Controllers
         [HttpPatch("{id}/add_tip", Name = "AddTip")]
         public IActionResult AddTip(int id, decimal tip) // Apply tip
         {
-            if (_orderService.AddTip(id, tip))
+            var updatedOrder = _orderService.AddTip(id, tip);
+            if (updatedOrder != null)
             {
-                return Ok();
+                return Ok(updatedOrder);
             }
             else
             {
@@ -126,9 +123,9 @@ namespace POS.WebApi.Controllers
         }
 
         [HttpGet("{id}/invoice")]
-        public IActionResult GenerateInvoice(int orderId) // Create new DTO for calculations
+        public IActionResult GenerateInvoice(int id)
         {
-            var invoice = _orderService.GetOrderInvoice(orderId);
+            var invoice = _orderService.GetOrderInvoice(id);
             if (invoice != null)
             {
                 return Ok(invoice);

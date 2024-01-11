@@ -51,7 +51,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(
-        @"Server=(localdb)\mssqllocaldb;Database=PosDB;Trusted_Connection=True");
+    @"Server=DESKTOP-QJO34A5\SQLEXPRESS;Database=PosDB;Trusted_Connection=True;TrustServerCertificate=True;");
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -361,6 +361,20 @@ namespace POS.Core.Services
                 return null;
             }
 
+
+            List<Voucher> vouchers = _context.Voucher.Where(i => i.OrderId == orderId).Select(i => i).ToList();
+            Decimal payedByVouchersAmount = 0;
+            foreach (Voucher voucher in vouchers)
+            {
+                payedByVouchersAmount += voucher.Amount;
+            }
+
+
+            InvoiceResponse? OrderInvoice = GetOrderInvoice(orderId);
+            if (OrderInvoice != null && payedByVouchersAmount >= OrderInvoice.TotalSum)
+            {
+                order.PaymentMethod = PaymentMethod.FullVoucher;
+            }
             else
             {
                 if (paymentType == "cash")
@@ -375,7 +389,7 @@ namespace POS.Core.Services
                 {
                     return null;
                 }
-            }
+            }   
 
             order.PaidDate = DateTime.Now;
             order.Status = OrderStatus.Paid;
@@ -523,6 +537,7 @@ namespace POS.Core.Services
             
 
             var TotalSum = items.Sum(item => item.UnitPrice * item.UnitCount + item.AppliedTax);
+            TotalSum += order.TipAmount;
             DateTime? paidDate = order.PaidDate == null ? null : order.PaidDate.Value;
             return new InvoiceResponse
             {
